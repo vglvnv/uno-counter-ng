@@ -1,0 +1,15 @@
+.background {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  left: 0;
+  top: 0;
+}
+.background .inner {
+  background-image: url(UNO_Logo.svg);
+  background-position: center;
+  opacity: 0.3;
+  height: 100%;
+  width: 100%;
+}

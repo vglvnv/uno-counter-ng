@@ -1,0 +1,10 @@
+@media screen and (min-width: 992px) {
+  .card.init {
+      width: 30rem;
+  }
+}
+@media screen and (max-width: 992px) {
+  .card.init {
+      width: 100%;
+  }
+}
