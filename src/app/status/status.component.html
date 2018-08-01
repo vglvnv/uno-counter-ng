@@ -1,7 +1,7 @@
 <div class="card status">
   <div class="card-body">
       <h5 class="card-title">Uno Score Counter</h5>
-      <h6 class="card-subtitle" [ngSwitch]="isGameOver()">
+      <h6 class="card-subtitle" [ngSwitch]="!!isGameOver()">
           <span *ngSwitchCase="true">Congrats! We have a winner! You can rematch or start a new game.</span>
           <span *ngSwitchDefault>Players need to reach {{needToWin}} points to win. Click the "Plus" button to add points to player score.</span>
       </h6>
@@ -28,7 +28,7 @@
           </table>
           <div class="row">
               <div class="col">
-                  <button class="btn btn-primary w-100" (click)="rematch(isGameOver())">Rematch</button>
+                  <button class="btn btn-primary w-100" (click)="rematch(!!isGameOver())">Rematch</button>
               </div>
               <div class="col">
                   <button class="btn btn-secondary w-100" (click)="newGame()">New game</button>
