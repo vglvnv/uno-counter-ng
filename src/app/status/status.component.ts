@@ -26,7 +26,7 @@ export class StatusComponent implements OnInit {
   isGameOver(): boolean {
     return !!this.getWinner();
   }
-  winnerClass(player: Player) {
+  getWinnerClass(player: Player) {
     return this.getWinner() === player ? 'table-success' : '';
   }
   rematch(confirmed?: boolean) {

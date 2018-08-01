@@ -13,7 +13,7 @@
                   <th>Up to win</th>
                   <th *ngIf="!isGameOver()">Add</th>
               </tr>
-              <tr *ngFor="let player of players" [ngClass]="winnerClass(player)">
+              <tr *ngFor="let player of players" [ngClass]="getWinnerClass(player)">
                   <td>
                     <h5><app-player-badge [player]="player"></app-player-badge></h5>
                   </td>

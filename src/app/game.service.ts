@@ -20,8 +20,8 @@ export class GameService {
     this.players[id].id = id;
     this._updatePlayers();
   }
-  removePlayer(player: Player) {
-    this.players.filter(pl => pl !== player);
+  removePlayer(playerId: number) {
+    this.players.filter(pl => pl.id !== playerId);
     this._updatePlayersId();
   }
   removeAllPlayers() {
