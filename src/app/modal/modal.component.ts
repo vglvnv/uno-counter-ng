@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, ViewChild, ElementRef } from '@angular/core';
-import $ from 'jquery';
-import * as bootstrap from 'bootstrap/dist/js/bootstrap.min.js';
 import { EventEmitter } from '@angular/core';
+import $ from 'jquery';
+import 'bootstrap';
 
 @Component({
   selector: 'app-modal',

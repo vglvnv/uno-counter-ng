@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Player } from '../player';
 import { ModalComponent } from '../modal/modal.component';
 import { GameService } from '../game.service';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-status',
@@ -13,9 +14,19 @@ export class StatusComponent implements OnInit {
   @ViewChild('newGameModal') newGameModal: ModalComponent;
   needToWin: number;
   players: Player[] = [];
-  upToWin() { }
-  isGameOver() { }
-  winnerClass() { }
+  upToWin(player: Player) {
+    return this.needToWin - player.score;
+  }
+  getAddLink(player: Player) {
+    return ['/add', player.id];
+  }
+  isGameOver(): number {
+    const winner = this.players.find(el => el.score >= this.needToWin);
+    return winner ? winner.id : null;
+  }
+  winnerClass(player: Player) {
+    return this.isGameOver() === player.id ? 'table-success' : '';
+  }
   rematch(confirmed?: boolean) {
     if (!confirmed) {
       this.rematchModal.show(true);
@@ -31,10 +42,20 @@ export class StatusComponent implements OnInit {
     }
     this.newGameModal.show(false);
     this.gameService.newGame();
-    // TODO: редирект на init
+    this.router.navigate(['init']);
   }
-  constructor(private gameService: GameService) { }
   ngOnInit() {
-    this.gameService.players$.subscribe(players => this.players = players);
+    this.gameService.players$.subscribe(players => {
+      if (players.length === 0) {
+        this.router.navigate(['init']);
+        return;
+      }
+      this.players = players;
+    });
+    this.gameService.needPointsToWin$.subscribe(value => this.needToWin = value);
   }
+  constructor(
+    private gameService: GameService,
+    private router: Router
+  ) { }
 }

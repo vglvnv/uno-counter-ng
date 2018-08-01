@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Player } from './player';
-import { Subject } from '../../node_modules/rxjs';
+import { BehaviorSubject } from '../../node_modules/rxjs';
 
 const DEFAULT_POINTS_TO_WIN = 200;
 
@@ -9,8 +9,8 @@ const DEFAULT_POINTS_TO_WIN = 200;
 })
 export class GameService {
   players: Player[] = [];
-  needPointsToWin = DEFAULT_POINTS_TO_WIN;
-  players$: Subject<Player[]> = new Subject<Player[]>();
+  needPointsToWin$: BehaviorSubject<number> = new BehaviorSubject<number>(DEFAULT_POINTS_TO_WIN);
+  players$: BehaviorSubject<Player[]> = new BehaviorSubject<Player[]>([]);
   addPlayer(player: string | Player) {
     const playerInst: Player = typeof player === 'string' ? <Player>{
       name: player,
@@ -28,13 +28,13 @@ export class GameService {
     this.players = [];
     this._updatePlayers();
   }
-  addPointsTo(player: Player, points: number) {
+  addPointsTo(playerId: number, points: number) {
+    const player = this.players.find(el => el.id === playerId);
     player.score += points;
     this._updatePlayers();
   }
   setPointsToWin(points: number) {
-    this.needPointsToWin = points;
-    this._updatePlayers();
+    this.needPointsToWin$.next(points);
   }
   rematch() {
     this.players.forEach((_, i , arr) => arr[i].score = 0);
@@ -42,7 +42,7 @@ export class GameService {
   }
   newGame() {
     this.removeAllPlayers();
-    this.needPointsToWin = DEFAULT_POINTS_TO_WIN;
+    this.needPointsToWin$.next(DEFAULT_POINTS_TO_WIN);
     this._updatePlayers();
   }
   private _updatePlayersId() {

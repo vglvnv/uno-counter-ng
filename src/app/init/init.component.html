@@ -7,7 +7,7 @@
               <div class="input-group-prepend">
                   <span class="input-group-text" id="needPointsToWinAddon">Points to win</span>
               </div>
-              <input [(ngModel)]="needPointsToWin" type="number" step=50 class="form-control" aria-label="needPointsToWin" aria-describedby="needPointsToWinAddon">
+              <input #needPointsToWinInput [(ngModel)]="needPointsToWin" type="number" step=50 class="form-control" aria-label="needPointsToWin" aria-describedby="needPointsToWinAddon">
           </div>
           <div [ngSwitch]="players.length < 10">
             <div class="input-group" *ngSwitchCase="true">

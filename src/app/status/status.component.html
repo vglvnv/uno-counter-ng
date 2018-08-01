@@ -14,11 +14,13 @@
                   <th *ngIf="!isGameOver()">Add</th>
               </tr>
               <tr *ngFor="let player of players" [ngClass]="winnerClass(player)">
-                  <td><h5></h5></td>
+                  <td>
+                    <h5><app-player-badge [player]="player"></app-player-badge></h5>
+                  </td>
                   <td>{{player.score}}</td>
                   <td>{{upToWin(player)}}</td>
                   <td *ngIf="!isGameOver()">
-                      <a routerLink="/add/${player.id}" class="btn btn-light">
+                      <a [routerLink]="getAddLink(player)" class="btn btn-light">
                           <i class="fas fa-plus"></i>
                       </a>
                   </td>
@@ -26,7 +28,7 @@
           </table>
           <div class="row">
               <div class="col">
-                  <button class="btn btn-primary w-100" (click)="rematch(isGameOver)">Rematch</button>
+                  <button class="btn btn-primary w-100" (click)="rematch(isGameOver())">Rematch</button>
               </div>
               <div class="col">
                   <button class="btn btn-secondary w-100" (click)="newGame()">New game</button>
@@ -36,42 +38,4 @@
   </div>
   <app-modal #rematchModal message="It will erase score for all players. Continue?" (yes)="rematch(true)"></app-modal>
   <app-modal #newGameModal message="It will erase all the data. Continue?" (yes)="newGame(true)"></app-modal>
-  <!-- <div class="modal fade" id="rematchModal" tabindex="-1" role="dialog" aria-labelledby="rematchModalTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title" id="rematchModalTitle">Confirmation</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  It will erase score for all players. Continue?
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                  <button type="button" class="btn btn-primary" (click)="rematch(true)">Yes</button>
-              </div>
-          </div>
-      </div>
-  </div>
-  <div class="modal fade" id="newGameModal" tabindex="-1" role="dialog" aria-labelledby="newGameTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-              <h5 class="modal-title" id="newGameTitle">Confirmation</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  It will erase all the data. Continue?
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                  <button type="button" class="btn btn-primary" (click)="newGame(true)">Yes</button>
-              </div>
-          </div>
-      </div>
-  </div>
-</div> -->
+</div>
