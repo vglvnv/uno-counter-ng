@@ -15,17 +15,19 @@ export class StatusComponent implements OnInit {
   needToWin: number;
   players: Player[] = [];
   upToWin(player: Player) {
-    return this.needToWin - player.score;
+    return this.getWinner() === player ? '' :  this.needToWin - player.score;
   }
   getAddLink(player: Player) {
     return ['/add', player.id];
   }
-  isGameOver(): number {
-    const winner = this.players.find(el => el.score >= this.needToWin);
-    return winner ? winner.id : null;
+  getWinner(): Player {
+    return this.players.find(el => el.score >= this.needToWin);
+  }
+  isGameOver(): boolean {
+    return !!this.getWinner();
   }
   winnerClass(player: Player) {
-    return this.isGameOver() === player.id ? 'table-success' : '';
+    return this.getWinner() === player ? 'table-success' : '';
   }
   rematch(confirmed?: boolean) {
     if (!confirmed) {
