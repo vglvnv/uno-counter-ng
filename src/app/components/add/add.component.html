@@ -1,0 +1,75 @@
+<div class="card add">
+    <div class="card-body" *ngIf="player$ | async">
+        <h5 class="card-title">Uno Score Counter</h5>
+        <h6 class="card-subtitle">Click buttons that match cards value to increase the score.</h6>
+        <div class="row mt-3">
+            <div class="col text-center">
+                <h3>
+                  <app-player-badge [player]="player$ | async"></app-player-badge>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <h3>{{summ$ | async}} ({{needToWin$ | async}} up to win)</h3>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(1)">+1</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(2)">+2</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(3)">+3</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(4)">+4</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(5)">+5</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(6)">+6</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(7)">+7</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(8)">+8</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-primary btn-lg w-100" (click)="addToStack(9)">+9</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <button class="btn btn-outline-dark btn-lg w-100" (click)="addToStack(20)">+20</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-outline-dark btn-lg w-100" (click)="addToStack(50)">+50</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button class="btn btn-secondary w-100" (click)="undo()" [disabled]="(summ$ | async) == 0">Undo</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-secondary w-100" (click)="reset()" [disabled]="(summ$ | async) == 0">Reset all</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <button class="btn btn-secondary w-100" routerLink='/status'>Cancel</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary w-100" (click)="onSubmit()" [disabled]="(summ$ | async) == 0">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

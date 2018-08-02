@@ -1,17 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
-import { BackgroundComponent } from './background/background.component';
-import { InitComponent } from './init/init.component';
-import { AddComponent } from './add/add.component';
-import { StatusComponent } from './status/status.component';
-import { PlayerBadgeComponent } from './player-badge/player-badge.component';
+import { BackgroundComponent } from './components/background/background.component';
+import { InitComponent } from './components/init/init.component';
+import { AddComponent } from './components/add/add.component';
+import { StatusComponent } from './components/status/status.component';
+import { PlayerBadgeComponent } from './components/player-badge/player-badge.component';
+import { ModalComponent } from './components/modal/modal.component';
+
 import { AppRoutingModule } from './app-routing.module';
 
 import { GameService } from './game.service';
-import { ModalComponent } from './modal/modal.component';
+
+import { reducers } from './store/reducers';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import { ModalComponent } from './modal/modal.component';
     ModalComponent
   ],
   imports: [
-    BrowserModule, FormsModule, AppRoutingModule
+    BrowserModule, FormsModule, AppRoutingModule,
+    StoreModule.forRoot(reducers)
   ],
   providers: [GameService],
   bootstrap: [AppComponent]

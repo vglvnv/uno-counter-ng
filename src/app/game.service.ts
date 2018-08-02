@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Player } from './player';
-import { BehaviorSubject } from '../../node_modules/rxjs';
+import { Player } from './models/player';
+import { BehaviorSubject } from 'rxjs';
 
 const DEFAULT_POINTS_TO_WIN = 200;
 

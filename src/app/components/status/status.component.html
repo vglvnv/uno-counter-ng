@@ -1,9 +1,9 @@
 <div class="card status">
   <div class="card-body">
       <h5 class="card-title">Uno Score Counter</h5>
-      <h6 class="card-subtitle" [ngSwitch]="isGameOver()">
+      <h6 class="card-subtitle" [ngSwitch]="isGameOver$ | async">
           <span *ngSwitchCase="true">Congrats! We have a winner! You can rematch or start a new game.</span>
-          <span *ngSwitchDefault>Players need to reach {{needToWin}} points to win. Click the "Plus" button to add points to player score.</span>
+          <span *ngSwitchDefault>Players need to reach {{needToWin$ | async}} points to win. Click the "Plus" button to add points to player score.</span>
       </h6>
       <div class="mt-3">
           <table class="table text-center">
@@ -11,15 +11,15 @@
                   <th>Player Name</th>
                   <th>Score</th>
                   <th>Up to win</th>
-                  <th *ngIf="!isGameOver()">Add</th>
+                  <th *ngIf="!(isGameOver$ | async)">Add</th>
               </tr>
-              <tr *ngFor="let player of players" [ngClass]="getWinnerClass(player)">
+              <tr *ngFor="let player of players$ | async" [ngClass]="getWinnerClass((winner$ | async) === player)">
                   <td>
                     <h5><app-player-badge [player]="player"></app-player-badge></h5>
                   </td>
                   <td>{{player.score}}</td>
-                  <td>{{upToWin(player)}}</td>
-                  <td *ngIf="!isGameOver()">
+                  <td>{{ (winner$ | async) === player ? '' : player.upToWin }}</td>
+                  <td *ngIf="!(isGameOver$ | async)">
                       <a [routerLink]="getAddLink(player)" class="btn btn-light">
                           <i class="fas fa-plus"></i>
                       </a>
@@ -28,7 +28,7 @@
           </table>
           <div class="row">
               <div class="col">
-                  <button class="btn btn-primary w-100" (click)="rematch(isGameOver())">Rematch</button>
+                  <button #rematchBtn class="btn btn-primary w-100" value="{{isGameOver$ | async}}" (click)="rematch(rematchBtn.value)">Rematch</button>
               </div>
               <div class="col">
                   <button class="btn btn-secondary w-100" (click)="newGame()">New game</button>

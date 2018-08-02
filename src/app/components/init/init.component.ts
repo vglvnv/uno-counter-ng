@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Player } from '../player';
-import { GameService } from '../game.service';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+
+import * as fromRoot from '../../store';
+import { Player } from '../../models/player';
 
 @Component({
   selector: 'app-init',
@@ -11,29 +13,30 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 })
 export class InitComponent implements OnInit {
   // TODO: Реализовать удаление пользователей
+  // TODO: При переходе дальше по роутеру отправлять актуальное состояние needToWin
   @ViewChild('needPointsToWinInput') input: ElementRef;
-  needPointsToWin = 200;
-  players: Player[] = [];
+  needToWin$: Observable<number>;
+  players$: Observable<Player[]>;
+  readyToPlay$: Observable<boolean>;
   addPlayer(playerName: string) {
     if (!playerName) {
       return;
     }
-    this.gameService.addPlayer(playerName);
+    this.store.dispatch(new fromRoot.CreatePlayer(playerName));
   }
-  check() {
-    return this.needPointsToWin > 0 && this.players.length > 1;
+  constructor(private store: Store<fromRoot.State>) {
+    this.needToWin$ = store.select(fromRoot.getNeedPointsToWin);
+    this.players$ = store.select(fromRoot.getPlayers);
+    this.readyToPlay$ = store.select(fromRoot.isReadyToPlay);
   }
-  constructor(private gameService: GameService) { }
   ngOnInit() {
-    this.gameService.players$.subscribe(players => this.players = players);
     fromEvent<Event>(this.input.nativeElement, 'change')
       .pipe(
         map(ev => +(<HTMLInputElement>(ev.target)).value),
         debounceTime(500),
         distinctUntilChanged()
       ).subscribe(val => {
-        this.needPointsToWin = val;
-        this.gameService.setPointsToWin(val);
+        this.store.dispatch(new fromRoot.SetNeedToWin(val));
       });
   }
 }

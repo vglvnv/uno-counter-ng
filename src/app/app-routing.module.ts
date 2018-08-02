@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { InitComponent } from './init/init.component';
-import { StatusComponent } from './status/status.component';
-import { AddComponent } from './add/add.component';
+import { InitComponent } from './components/init/init.component';
+import { StatusComponent } from './components/status/status.component';
+import { AddComponent } from './components/add/add.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/init', pathMatch: 'full'},
