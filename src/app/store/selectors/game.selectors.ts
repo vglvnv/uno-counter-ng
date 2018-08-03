@@ -7,6 +7,7 @@ export const getPlayers = createSelector(fromRoot.getGameState, fromGame.getPlay
 export const getNeedPointsToWin = createSelector(fromRoot.getGameState, fromGame.getNeedPointsToWin);
 export const getSelectedPlayerId = createSelector(fromRoot.getGameState, fromGame.getSelectedPlayerId);
 export const getStack = createSelector(fromRoot.getGameState, fromGame.getStack);
+export const getInited = createSelector(fromRoot.getGameState, fromGame.getInited);
 
 export const getPlayersExtended = createSelector(getPlayers, getNeedPointsToWin,
   (players: Player[], toWin: number) =>
@@ -33,3 +34,6 @@ export const getWinner = createSelector(getPlayers, getNeedPointsToWin,
 export const getStackSumm = createSelector(getStack, (stack: number[]) => stack.reduce((acc, el) => acc + el, 0));
 
 export const isGameOver = createSelector(getWinner, (winner: Player) => !!winner);
+
+export const isNeedToBeInited = createSelector(getPlayers, getInited,
+  (players, inited) => inited && players.length === 0);

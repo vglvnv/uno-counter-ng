@@ -35,12 +35,6 @@ export class AddComponent implements OnInit {
     const userId = +this.route.snapshot.paramMap.get('id');
     this.store.dispatch(new fromRoot.SelectPlayer(userId));
     // TODO: ngrx-router и guard для защиты от крвого перехода по пустой ссылке
-    this.player$.subscribe(player => {
-      if (!player) {
-        this.router.navigate(['status']);
-        return;
-      }
-    });
   }
 
   constructor(

@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
 import { BackgroundComponent } from './components/background/background.component';
@@ -16,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { GameService } from './game.service';
 
 import { reducers } from './store/reducers';
+import { Effects } from './store/effects';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { reducers } from './store/reducers';
   ],
   imports: [
     BrowserModule, FormsModule, AppRoutingModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([Effects])
   ],
   providers: [GameService],
   bootstrap: [AppComponent]

@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { State } from '../reducers/game.reducers';
 
 export const SET_NEED_TO_WIN = 'SET_NEED_TO_WIN';
 export const CREATE_PLAYER = 'CREATE_PLAYER';
@@ -11,6 +12,10 @@ export const RESET_STACK = 'RESET_STACK';
 export const UNDO_STACK = 'UNDO_STACK';
 export const ENROLL_STACK = 'ENROLL_STACK';
 export const RESET_SELECTED_PLAYER = 'RESET_SELECTED_PLAYER';
+export const SAVE_STATE = 'SAVE_STATE';
+export const LOAD_STATE = 'LOAD_STATE';
+export const FETCH_STATE = 'FETCH_STATE';
+export const SAVED = 'SAVED';
 
 export class SetNeedToWin implements Action {
   readonly type = SET_NEED_TO_WIN;
@@ -94,6 +99,22 @@ export class ResetSelectedPlayer implements Action {
    */
   constructor() { }
 }
+export class SaveState implements Action {
+  readonly type = SAVE_STATE;
+  constructor() { }
+}
+export class LoadState implements Action {
+  readonly type = LOAD_STATE;
+  constructor() { }
+}
+export class FetchState implements Action {
+  readonly type = FETCH_STATE;
+  constructor(public payload: State) { }
+}
+export class Saved implements Action {
+  readonly type = SAVED;
+  constructor() { }
+}
 
 export type Action =
   SetNeedToWin          |
@@ -106,4 +127,8 @@ export type Action =
   ResetStack            |
   UndoStack             |
   EnrollStack           |
-  ResetSelectedPlayer;
+  ResetSelectedPlayer   |
+  SaveState             |
+  LoadState             |
+  FetchState            |
+  Saved;

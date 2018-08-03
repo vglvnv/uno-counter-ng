@@ -6,6 +6,7 @@ export interface State {
   needToWin: number;
   selectedPlayer: number;
   stack: number[];
+  inited?: boolean;
 }
 
 export const initialState: State = {
@@ -100,6 +101,11 @@ export function reducer(state = initialState, action: GameActions.Action) {
         selectedPlayer: null,
         stack: []
       };
+    case GameActions.FETCH_STATE:
+      return {
+        ...(action.payload || state),
+        inited: true
+      };
     default:
       return state;
   }
@@ -109,3 +115,4 @@ export const getPlayers = (state: State) => state.players;
 export const getNeedPointsToWin = (state: State) => state.needToWin;
 export const getSelectedPlayerId = (state: State) => state.selectedPlayer;
 export const getStack = (state: State) => state.stack;
+export const getInited = (state: State) => state.inited;
