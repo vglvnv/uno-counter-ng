@@ -50,6 +50,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     }
     this.newGameModal.show(false);
     this.store.dispatch(new fromRoot.ResetState());
+    this.router.navigate(['init']);
   }
 
   constructor(

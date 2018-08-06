@@ -51,7 +51,10 @@ export function reducer(state = initialState, action: GameActions.Action) {
         selectedPlayer: action.payload
       };
     case GameActions.RESET_STATE:
-      return initialState;
+      return {
+        ...initialState,
+        inited: true
+      };
     case GameActions.RESET_SCORE:
       return {
         ...state,

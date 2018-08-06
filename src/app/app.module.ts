@@ -19,6 +19,7 @@ import { GameService } from './game.service';
 
 import { reducers } from './store/reducers';
 import { Effects } from './store/effects';
+import { AppGuard } from './app-guard.service';
 
 @NgModule({
   declarations: [
