@@ -1,7 +1,8 @@
-import { createSelector, Store } from '@ngrx/store';
-import { Player } from '../../models/player';
+import { createSelector } from '@ngrx/store';
+
 import * as fromRoot from '../reducers';
 import * as fromGame from '../reducers/game.reducers';
+import { Player } from '../../models/player';
 
 export const getPlayers = createSelector(fromRoot.getGameState, fromGame.getPlayers);
 export const getNeedPointsToWin = createSelector(fromRoot.getGameState, fromGame.getNeedPointsToWin);

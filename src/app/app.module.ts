@@ -15,11 +15,8 @@ import { ModalComponent } from './components/modal/modal.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { GameService } from './game.service';
-
 import { reducers } from './store/reducers';
 import { Effects } from './store/effects';
-import { AppGuard } from './app-guard.service';
 
 @NgModule({
   declarations: [
@@ -37,7 +34,6 @@ import { AppGuard } from './app-guard.service';
     EffectsModule.forRoot([Effects]),
     StoreDevtoolsModule.instrument()
   ],
-  providers: [GameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

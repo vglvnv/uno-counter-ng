@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import * as localForage from 'localforage';
 import { Observable, from } from 'rxjs';
+import * as localForage from 'localforage';
+
 import { State } from './store/reducers';
 
 @Injectable({

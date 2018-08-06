@@ -1,5 +1,5 @@
-import * as fromGame from './game.reducers';
 import { createFeatureSelector, ActionReducerMap } from '@ngrx/store';
+import * as fromGame from './game.reducers';
 
 export interface State {
   game: fromGame.State;

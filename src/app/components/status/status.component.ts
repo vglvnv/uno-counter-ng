@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { ModalComponent } from '../modal/modal.component';
 
 import * as fromRoot from '../../store';
 import { Player } from '../../models/player';
-
-import { ModalComponent } from '../modal/modal.component';
-import { takeUntil } from '../../../../node_modules/rxjs/operators';
 
 @Component({
   selector: 'app-status',
@@ -63,9 +63,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     this.winner$ = store.select(fromRoot.getWinner);
     this.isGameOver$ = store.select(fromRoot.isGameOver);
   }
-
   ngOnInit() {
-    // TODO: ngrx-router и guard для защиты от крвого перехода по пустой ссылке
     this.needToBeInited$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(val => {

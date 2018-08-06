@@ -21,7 +21,9 @@ const COLOR_MAP = [
 })
 export class PlayerBadgeComponent implements OnInit {
   @Input() player: Player;
+
   getClass = () => `badge ${COLOR_MAP[this.player.id]}`;
+
   constructor() { }
   ngOnInit() { }
 }

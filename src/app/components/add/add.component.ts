@@ -31,12 +31,6 @@ export class AddComponent implements OnInit {
     this.router.navigate(['status']);
   }
 
-  ngOnInit() {
-    const userId = +this.route.snapshot.paramMap.get('id');
-    this.store.dispatch(new fromRoot.SelectPlayer(userId));
-    // TODO: ngrx-router и guard для защиты от крвого перехода по пустой ссылке
-  }
-
   constructor(
     private store: Store<fromRoot.State>,
     private router: Router,
@@ -46,5 +40,9 @@ export class AddComponent implements OnInit {
     this.stack$ = store.select(fromRoot.getStack);
     this.needToWin$ = store.select(fromRoot.getNeedPointsToWin);
     this.summ$ = store.select(fromRoot.getStackSumm);
+  }
+  ngOnInit() {
+    const userId = +this.route.snapshot.paramMap.get('id');
+    this.store.dispatch(new fromRoot.SelectPlayer(userId));
   }
 }

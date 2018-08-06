@@ -13,7 +13,6 @@ import { Player } from '../../models/player';
 })
 export class InitComponent implements OnInit, OnDestroy {
   // TODO: Реализовать удаление пользователей
-  // TODO: При переходе дальше по роутеру отправлять актуальное состояние needToWin
   private ngUnsubscribe = new Subject();
 
   @ViewChild('needPointsToWinInput') input: ElementRef;

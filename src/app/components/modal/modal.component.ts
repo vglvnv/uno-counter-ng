@@ -12,6 +12,7 @@ export class ModalComponent implements OnInit {
   @ViewChild('modalRoot') modalEl: ElementRef;
   @Input() message = '';
   @Output() yes: EventEmitter<any> = new EventEmitter();
+
   onYesClicked() {
     this.yes.emit(null);
   }
@@ -20,9 +21,7 @@ export class ModalComponent implements OnInit {
     const el = $(this.modalEl.nativeElement);
     el.modal(arg);
   }
+
   constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() { }
 }
