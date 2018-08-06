@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { BackgroundComponent } from './components/background/background.component';
@@ -32,7 +33,8 @@ import { Effects } from './store/effects';
   imports: [
     BrowserModule, FormsModule, AppRoutingModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([Effects])
+    EffectsModule.forRoot([Effects]),
+    StoreDevtoolsModule.instrument()
   ],
   providers: [GameService],
   bootstrap: [AppComponent]
