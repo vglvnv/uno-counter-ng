@@ -17,5 +17,4 @@ export class LocalStorageService {
   clearState(): Observable<void> {
     return from(localForage.removeItem('gameState'));
   }
-  constructor() { }
 }

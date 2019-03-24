@@ -4,14 +4,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { InitComponent } from './components/init/init.component';
 import { StatusComponent } from './components/status/status.component';
 import { AddComponent } from './components/add/add.component';
+import { FixComponent } from './components/fix/fix.component';
 
 import { AppGuard } from './app-guard.service';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/init', pathMatch: 'full'},
+  { path: '', redirectTo: '/init', pathMatch: 'full' },
   { path: 'init', component: InitComponent, canActivate: [AppGuard] },
   { path: 'status', component: StatusComponent, canActivate: [AppGuard] },
   { path: 'add/:id', component: AddComponent, canActivate: [AppGuard] },
+  { path: 'fix/:id', component: FixComponent, canActivate: [AppGuard] }
 ];
 
 @NgModule({
@@ -19,4 +21,4 @@ const routes: Routes = [
   providers: [AppGuard],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

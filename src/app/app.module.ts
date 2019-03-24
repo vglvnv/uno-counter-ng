@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { reducers } from './store/reducers';
 import { Effects } from './store/effects';
+import { FixComponent } from './components/fix/fix.component';
 
 @NgModule({
   declarations: [
@@ -26,14 +27,18 @@ import { Effects } from './store/effects';
     AddComponent,
     StatusComponent,
     PlayerBadgeComponent,
-    ModalComponent
+    ModalComponent,
+    FixComponent
   ],
   imports: [
-    BrowserModule, FormsModule, AppRoutingModule,
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([Effects]),
     StoreDevtoolsModule.instrument()
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

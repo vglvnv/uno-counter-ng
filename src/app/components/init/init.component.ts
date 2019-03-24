@@ -2,50 +2,62 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-
-import * as fromRoot from '../../store';
+import * as fromStore from '../../store';
 import { Player } from '../../models/player';
+import { makeSubscribeToSelectorFn } from '../../utils/subscribe-to-selector';
 
+// TODO: Реализовать удаление пользователей
 @Component({
   selector: 'app-init',
   templateUrl: './init.component.html',
   styleUrls: ['./init.component.scss']
 })
 export class InitComponent implements OnInit, OnDestroy {
-  // TODO: Реализовать удаление пользователей
-  private ngUnsubscribe = new Subject();
-
   @ViewChild('needPointsToWinInput') input: ElementRef;
+
   needToWin$: Observable<number>;
   players$: Observable<Player[]>;
   readyToPlay$: Observable<boolean>;
+
+  private ngUnsubscribe$ = new Subject();
+
+  constructor(private store: Store<fromStore.State>) {}
 
   addPlayer(playerName: string) {
     if (!playerName) {
       return;
     }
-    this.store.dispatch(new fromRoot.CreatePlayer(playerName));
-  }
-
-  constructor(private store: Store<fromRoot.State>) {
-    this.needToWin$ = store.select(fromRoot.getNeedPointsToWin);
-    this.players$ = store.select(fromRoot.getPlayers);
-    this.readyToPlay$ = store.select(fromRoot.isReadyToPlay);
+    this.store.dispatch(new fromStore.CreatePlayer(playerName));
   }
 
   ngOnInit() {
-    fromEvent<Event>(this.input.nativeElement, 'change')
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .pipe(
-        map(ev => +(<HTMLInputElement>(ev.target)).value),
-        debounceTime(500),
-        distinctUntilChanged()
-      ).subscribe(val => {
-        this.store.dispatch(new fromRoot.SetNeedToWin(val));
-      });
+    this.subscribeToSelectors();
+    this.subscribeToInputEvent();
   }
+
   ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
+  private subscribeToSelectors() {
+    const subscribeToSelector = makeSubscribeToSelectorFn(this.store, this.ngUnsubscribe$);
+
+    this.needToWin$ = subscribeToSelector(fromStore.getNeedPointsToWin);
+    this.players$ = subscribeToSelector(fromStore.getPlayers);
+    this.readyToPlay$ = subscribeToSelector(fromStore.isReadyToPlay);
+  }
+
+  private subscribeToInputEvent() {
+    fromEvent<Event>(this.input.nativeElement, 'change')
+      .pipe(
+        map(ev => +(<HTMLInputElement>ev.target).value),
+        debounceTime(500),
+        distinctUntilChanged(),
+        takeUntil(this.ngUnsubscribe$)
+      )
+      .subscribe(val => {
+        this.store.dispatch(new fromStore.SetNeedToWin(val));
+      });
   }
 }

@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Effect, Actions, ofType,  } from '@ngrx/effects';
+import { Effect, Actions, ofType } from '@ngrx/effects';
 import { switchMap, map, withLatestFrom, mergeMap } from 'rxjs/operators';
-
 import { LocalStorageService } from '../../local-storage.service';
-
 import * as fromReducers from '../reducers';
 import * as fromActions from '../actions';
 
 @Injectable()
 export class Effects {
-  constructor(
-    private actions$: Actions,
-    private localStorageService: LocalStorageService,
-    private store$: Store<fromReducers.State>
-  ) {}
+  constructor(private actions$: Actions, private localStorageService: LocalStorageService, private store$: Store<fromReducers.State>) {}
   @Effect()
   saveStore$ = this.actions$.pipe(
     ofType(
@@ -28,24 +22,20 @@ export class Effects {
       fromActions.SELECT_PLAYER
     ),
     withLatestFrom(this.store$),
-    mergeMap(([actions, state]) => this.localStorageService.setState({
-      game: {
-        ...state.game,
-        inited: false
-      }
-    })
-      .pipe(
-        map(_ => new fromActions.Saved())
-      )
-    ),
+    mergeMap(([actions, state]) =>
+      this.localStorageService
+        .setState({
+          game: {
+            ...state.game,
+            isInitialized: false
+          }
+        })
+        .pipe(map(() => new fromActions.Saved()))
+    )
   );
   @Effect()
   loadState$ = this.actions$.pipe(
     ofType(fromActions.LOAD_STATE),
-    switchMap(() => this.localStorageService.getState()
-      .pipe(
-        map(state => new fromActions.FetchState(state && state.game))
-      )
-    )
+    switchMap(() => this.localStorageService.getState().pipe(map(state => new fromActions.FetchState(state && state.game))))
   );
 }

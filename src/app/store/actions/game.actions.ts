@@ -11,6 +11,7 @@ export const ADD_TO_STACK = 'ADD_TO_STACK';
 export const RESET_STACK = 'RESET_STACK';
 export const UNDO_STACK = 'UNDO_STACK';
 export const ENROLL_STACK = 'ENROLL_STACK';
+export const FIX_SELECTED_PLAYER_SCORE = 'FIX_SELECTED_PLAYER_SCORE';
 export const RESET_SELECTED_PLAYER = 'RESET_SELECTED_PLAYER';
 export const SAVE_STATE = 'SAVE_STATE';
 export const LOAD_STATE = 'LOAD_STATE';
@@ -88,47 +89,55 @@ export class UndoStack implements Action {
 export class EnrollStack implements Action {
   readonly type = ENROLL_STACK;
   /**
-   * Enroll the summ of stack to the selected player score
+   * Enroll the sum of stack to the selected player score
    */
   constructor() {}
+}
+export class FixSelectedPlayerScore implements Action {
+  readonly type = FIX_SELECTED_PLAYER_SCORE;
+  /**
+   * Fix the score for the selected player
+   */
+  constructor(public payload: { score: number }) {}
 }
 export class ResetSelectedPlayer implements Action {
   readonly type = RESET_SELECTED_PLAYER;
   /**
    * Reset selected player
    */
-  constructor() { }
+  constructor() {}
 }
 export class SaveState implements Action {
   readonly type = SAVE_STATE;
-  constructor() { }
+  constructor() {}
 }
 export class LoadState implements Action {
   readonly type = LOAD_STATE;
-  constructor() { }
+  constructor() {}
 }
 export class FetchState implements Action {
   readonly type = FETCH_STATE;
-  constructor(public payload: State) { }
+  constructor(public payload: State) {}
 }
 export class Saved implements Action {
   readonly type = SAVED;
-  constructor() { }
+  constructor() {}
 }
 
 export type Action =
-  SetNeedToWin          |
-  CreatePlayer          |
-  RemovePlayer          |
-  SelectPlayer          |
-  ResetState            |
-  ResetScore            |
-  AddToStack            |
-  ResetStack            |
-  UndoStack             |
-  EnrollStack           |
-  ResetSelectedPlayer   |
-  SaveState             |
-  LoadState             |
-  FetchState            |
-  Saved;
+  | SetNeedToWin
+  | CreatePlayer
+  | RemovePlayer
+  | SelectPlayer
+  | ResetState
+  | ResetScore
+  | AddToStack
+  | ResetStack
+  | UndoStack
+  | EnrollStack
+  | FixSelectedPlayerScore
+  | ResetSelectedPlayer
+  | SaveState
+  | LoadState
+  | FetchState
+  | Saved;

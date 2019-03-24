@@ -3,11 +3,10 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { ModalComponent } from '../modal/modal.component';
-
-import * as fromRoot from '../../store';
+import * as fromStore from '../../store';
 import { Player } from '../../models/player';
+import { makeSubscribeToSelectorFn } from '../../utils/subscribe-to-selector';
 
 @Component({
   selector: 'app-status',
@@ -15,25 +14,44 @@ import { Player } from '../../models/player';
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent implements OnInit, OnDestroy {
-  private ngUnsubscribe = new Subject();
-
-  @ViewChild('rematchModal') rematchModal: ModalComponent;
-  @ViewChild('newGameModal') newGameModal: ModalComponent;
-
-  needToBeInited$: Observable<boolean>;
+  needToBeInitialize$: Observable<boolean>;
   players$: Observable<Player[]>;
   needToWin$: Observable<number>;
   winner$: Observable<Player>;
   isGameOver$: Observable<boolean>;
 
+  @ViewChild('rematchModal') rematchModal: ModalComponent;
+  @ViewChild('newGameModal') newGameModal: ModalComponent;
+
+  private ngUnsubscribe$ = new Subject();
+
+  constructor(private store: Store<fromStore.State>, private router: Router) {}
+
+  ngOnInit() {
+    this.subscribeToSelectors();
+    this.bindToRedirectToInit();
+    this.store.dispatch(new fromStore.ResetSelectedPlayer());
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
   getAddLink(player: Player) {
     return ['/add', player.id];
   }
-  getWinnerClass(condition: boolean) {
-     return condition ? 'table-success' : '';
+
+  getFixLink(player: Player) {
+    return ['/fix', player.id];
   }
-  rematch(confirmed?: boolean|string) {
-    if (confirmed && typeof(confirmed) === 'string' ) {
+
+  getWinnerClass(condition: boolean) {
+    return condition ? 'table-success' : '';
+  }
+
+  rematch(confirmed?: boolean | string) {
+    if (confirmed && typeof confirmed === 'string') {
       confirmed = JSON.parse(confirmed);
     }
     if (!confirmed) {
@@ -41,41 +59,35 @@ export class StatusComponent implements OnInit, OnDestroy {
       return;
     }
     this.rematchModal.show(false);
-    this.store.dispatch(new fromRoot.ResetScore());
+    this.store.dispatch(new fromStore.ResetScore());
   }
+
   newGame(confirmed?: boolean) {
     if (!confirmed) {
       this.newGameModal.show(true);
       return;
     }
     this.newGameModal.show(false);
-    this.store.dispatch(new fromRoot.ResetState());
+    this.store.dispatch(new fromStore.ResetState());
     this.router.navigate(['init']);
   }
 
-  constructor(
-    private store: Store<fromRoot.State>,
-    private router: Router
-  ) {
-    this.needToBeInited$ = store.select(fromRoot.isNeedToBeInited);
-    this.players$ = store.select(fromRoot.getPlayersExtended);
-    this.needToWin$ = store.select(fromRoot.getNeedPointsToWin);
-    this.winner$ = store.select(fromRoot.getWinner);
-    this.isGameOver$ = store.select(fromRoot.isGameOver);
-  }
-  ngOnInit() {
-    this.needToBeInited$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(val => {
+  private bindToRedirectToInit() {
+    this.needToBeInitialize$.pipe(takeUntil(this.ngUnsubscribe$)).subscribe(val => {
       if (val) {
         this.router.navigate(['init']);
         return;
       }
     });
-    this.store.dispatch(new fromRoot.ResetSelectedPlayer);
   }
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+
+  private subscribeToSelectors() {
+    const subscribeToSelector = makeSubscribeToSelectorFn(this.store, this.ngUnsubscribe$);
+
+    this.needToBeInitialize$ = subscribeToSelector(fromStore.isNeedToBeInitialized);
+    this.players$ = subscribeToSelector(fromStore.getPlayersExtended);
+    this.needToWin$ = subscribeToSelector(fromStore.getNeedPointsToWin);
+    this.winner$ = subscribeToSelector(fromStore.getWinner);
+    this.isGameOver$ = subscribeToSelector(fromStore.isGameOver);
   }
 }

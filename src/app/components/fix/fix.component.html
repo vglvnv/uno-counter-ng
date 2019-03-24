@@ -1,0 +1,34 @@
+<div class="card add">
+  <div class="card-body" *ngIf="(player$ | async)">
+    <h5 class="card-title">Uno Score Counter</h5>
+    <h6 class="card-subtitle">Set the correct score for the player.</h6>
+
+    <div class="row mt-3">
+      <div class="col text-center">
+        <h3>
+          <app-player-badge [player]="player$ | async"></app-player-badge>
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col text-center">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="playerNameAddon">Player Score</span>
+          </div>
+          <input type="number" class="form-control" aria-label="playerName" aria-describedby="playerNameAddon" [formControl]="scoreControl" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col">
+        <button class="btn btn-secondary w-100" routerLink="/status">Cancel</button>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary w-100" [disabled]="scoreControl.pristine || null" (click)="onSubmit()">Fix</button>
+      </div>
+    </div>
+  </div>
+</div>
