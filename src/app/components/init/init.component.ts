@@ -13,7 +13,8 @@ import { makeSubscribeToSelectorFn } from '../../utils/subscribe-to-selector';
   styleUrls: ['./init.component.scss']
 })
 export class InitComponent implements OnInit, OnDestroy {
-  @ViewChild('needPointsToWinInput', { static: true }) input: ElementRef;
+  @ViewChild('playerNameInput', { static: false }) playerNameInput: ElementRef;
+  @ViewChild('needPointsToWinInput', { static: false }) needPointsToWinInput: ElementRef;
 
   needToWin$: Observable<number>;
   players$: Observable<Player[]>;
@@ -24,6 +25,9 @@ export class InitComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromStore.State>) {}
 
   addPlayer(playerName: string) {
+    this.playerNameInput.nativeElement.focus();
+    this.playerNameInput.nativeElement.value = '';
+
     if (!playerName) {
       return;
     }
@@ -49,7 +53,7 @@ export class InitComponent implements OnInit, OnDestroy {
   }
 
   private subscribeToInputEvent() {
-    fromEvent<Event>(this.input.nativeElement, 'change')
+    fromEvent<Event>(this.needPointsToWinInput.nativeElement, 'change')
       .pipe(
         map(ev => +(<HTMLInputElement>ev.target).value),
         debounceTime(500),

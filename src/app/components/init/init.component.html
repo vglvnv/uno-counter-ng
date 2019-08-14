@@ -23,15 +23,15 @@
             <span class="input-group-text" id="playerNameAddon">Player Name</span>
           </div>
           <input
-            #playerNameTextBox
+            #playerNameInput
             type="text"
             class="form-control"
             aria-label="playerName"
             aria-describedby="playerNameAddon"
-            (keyup.enter)="addPlayer(playerNameTextBox.value); playerNameTextBox.value = ''"
+            (keyup.enter)="addPlayer(playerNameInput.value)"
           />
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" (click)="addPlayer(playerNameTextBox.value)">Add</button>
+            <button class="btn btn-outline-secondary" type="button" (click)="addPlayer(playerNameInput.value)">Add</button>
           </div>
         </div>
         <div *ngSwitchCase="false">
