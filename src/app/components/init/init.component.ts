@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy, AfterViewInit } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { makeSubscribeToSelectorFn } from '../../utils/subscribe-to-selector';
   templateUrl: './init.component.html',
   styleUrls: ['./init.component.scss']
 })
-export class InitComponent implements OnInit, OnDestroy {
+export class InitComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('playerNameInput', { static: false }) playerNameInput: ElementRef;
   @ViewChild('needPointsToWinInput', { static: false }) needPointsToWinInput: ElementRef;
 
@@ -24,6 +24,19 @@ export class InitComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<fromStore.State>) {}
 
+  ngOnInit() {
+    this.subscribeToSelectors();
+  }
+
+  ngAfterViewInit() {
+    this.subscribeToInputEvent();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe$.next();
+    this.ngUnsubscribe$.complete();
+  }
+
   addPlayer(playerName: string) {
     this.playerNameInput.nativeElement.focus();
     this.playerNameInput.nativeElement.value = '';
@@ -32,16 +45,6 @@ export class InitComponent implements OnInit, OnDestroy {
       return;
     }
     this.store.dispatch(new fromStore.CreatePlayer(playerName));
-  }
-
-  ngOnInit() {
-    this.subscribeToSelectors();
-    this.subscribeToInputEvent();
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe$.next();
-    this.ngUnsubscribe$.complete();
   }
 
   private subscribeToSelectors() {
