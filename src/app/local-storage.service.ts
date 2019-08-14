@@ -12,7 +12,7 @@ export class LocalStorageService {
     return from(localForage.setItem('gameState', state));
   }
   getState(): Observable<State> {
-    return from(localForage.getItem('gameState'));
+    return from(localForage.getItem<State>('gameState'));
   }
   clearState(): Observable<void> {
     return from(localForage.removeItem('gameState'));

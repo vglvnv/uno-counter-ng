@@ -12,7 +12,7 @@ export class ModalComponent {
   @Input() message = '';
   @Output() yes: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('modalRoot') modalEl: ElementRef;
+  @ViewChild('modalRoot', { static: true }) modalEl: ElementRef;
 
   onYesClicked() {
     this.yes.emit(null);

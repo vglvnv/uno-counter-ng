@@ -13,7 +13,7 @@ import { makeSubscribeToSelectorFn } from '../../utils/subscribe-to-selector';
   styleUrls: ['./init.component.scss']
 })
 export class InitComponent implements OnInit, OnDestroy {
-  @ViewChild('needPointsToWinInput') input: ElementRef;
+  @ViewChild('needPointsToWinInput', { static: true }) input: ElementRef;
 
   needToWin$: Observable<number>;
   players$: Observable<Player[]>;

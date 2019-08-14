@@ -20,8 +20,8 @@ export class StatusComponent implements OnInit, OnDestroy {
   winner$: Observable<Player>;
   isGameOver$: Observable<boolean>;
 
-  @ViewChild('rematchModal') rematchModal: ModalComponent;
-  @ViewChild('newGameModal') newGameModal: ModalComponent;
+  @ViewChild('rematchModal', { static: true }) rematchModal: ModalComponent;
+  @ViewChild('newGameModal', { static: true }) newGameModal: ModalComponent;
 
   private ngUnsubscribe$ = new Subject();
 
