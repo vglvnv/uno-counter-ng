@@ -18,6 +18,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { reducers } from './store/reducers';
 import { Effects } from './store/effects';
 import { FixComponent } from './components/fix/fix.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,8 @@ import { FixComponent } from './components/fix/fix.component';
     ReactiveFormsModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([Effects]),
-    StoreDevtoolsModule.instrument()
+    StoreDevtoolsModule.instrument(),
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
   bootstrap: [AppComponent]
 })
